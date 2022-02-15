@@ -46,9 +46,11 @@ namespace TopLearn.Core.DTOs.User
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(50, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
         public string NewPassword { get; set; }
+
         [Display(Name = "تکرار رمز عبور جدید")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         [MaxLength(50, ErrorMessage = "{0} نمیتواند بیشتر از {1} کاراکتر باشد")]
+        [Compare("NewPassword",ErrorMessage ="تکرار رمز عبور صحیح نمی باشد")]
         public string ReNewPassword { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Core.DTOs.User;
 using Microsoft.AspNetCore.Authorization;
+using TopLearn.Core.Security;
 
 namespace TopLearn.Areas.UserPanel.Controllers
 {
@@ -17,7 +18,7 @@ namespace TopLearn.Areas.UserPanel.Controllers
         }
         public IActionResult Index()
         {
-            var user=_userService.GetUserInformationsForShow(User.Identity.Name);
+            var user = _userService.GetUserInformationsForShow(User.Identity.Name);
             return View(user);
         }
 
@@ -59,6 +60,25 @@ namespace TopLearn.Areas.UserPanel.Controllers
         [Route("UserPanel/ChangePassword")]
         public IActionResult ChangePassword()
         {
+            return View();
+        }
+        [Route("UserPanel/ChangePassword")]
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordViewModel change)
+        {
+            var user = _userService.GetUserByUserName(User.Identity.Name);
+            if (!ModelState.IsValid)
+            {
+                return View(change);
+            }
+            if (user.Password != PasswordHasher.HashPasswrodMD5(change.CurrentPassword))
+            {
+                ModelState.AddModelError("CurrentPassword", "رمز عبور فعلی را بصورت صحیح وارد کنید");
+                return View(change);
+            }
+            user.Password = PasswordHasher.HashPasswrodMD5(change.NewPassword);
+            _userService.UpdateUser(user);
+            ViewBag.IsChanged = true;
             return View();
         }
     }
