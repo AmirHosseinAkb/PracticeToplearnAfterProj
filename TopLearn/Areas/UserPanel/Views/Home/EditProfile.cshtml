@@ -1,0 +1,87 @@
+﻿@model EditUserProfileViewModel
+@{
+    ViewData["Title"] = "EditProfile";
+}
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> پنل کاربری </li>
+        </ul>
+    </nav>
+</div>
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <form method="post" enctype="multipart/form-data">
+                    <partial name="_SideBar" />
+                    <div class="col-md-6">
+                        <section class="user-account-content">
+                            <header><h1> ویرایش حساب کاربری </h1></header>
+                            <div class="inner form-layer">
+
+                                <input type="hidden" asp-for="AvatarName" />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="username"><i class="zmdi zmdi-account"></i></span>
+                                            <input asp-for="UserName" type="text" class="form-control" placeholder="نام کاربری" aria-describedby="username">
+                                        </div>
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" id="email-address"><i class="zmdi zmdi-email"></i></span>
+                                            <input asp-for="Email" type="text" class="form-control" placeholder="ایمیل" aria-describedby="email-address">
+                                        </div>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-7 col-sm-8 col-xs-12">
+                                        <button class="btn btn-success"> ویرایش اطلاعات </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="avatar-layer">
+                            <div class="img-layer">
+                                <a href="" class="change-image"><i class="zmdi zmdi-edit"></i></a>
+                                <img id="imgAvatar" src="/UserAvatar/@Model.AvatarName">
+                            </div>
+                            <hr />
+                            <div class="form-control" style="margin-bottom:20px">
+                                <input id="imgInp" type="file" asp-for="UserAvatar" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts
+{
+<script>
+    function readURL(input) {
+
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imgAvatar').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    $("#imgInp").change(function () {
+        readURL(this);
+    });
+</script>
+}

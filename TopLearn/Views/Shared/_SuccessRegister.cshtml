@@ -1,0 +1,12 @@
+﻿@model User
+@{
+    ViewData["Title"] = "موفقیت ثبت نام";
+}
+
+<div class="alert alert-success">
+    <h1>کاربر گرامی @Model.UserName</h1>
+    <p>حساب کاربری شما با موفقیت در تاپلرن ایجاد شد.ایمیلی حای لینک فعالسازی به ایمیل @Model.Email ارسال شد</p>
+    <p>جهت فعالسازی حساب کاربری خود وارد ایمیلتان شده و روی لینک فعالسازی کلیک نمایید</p>
+    <a class="btn btn-warning" href="/Login">ورود به سایت</a>
+</div>
+
