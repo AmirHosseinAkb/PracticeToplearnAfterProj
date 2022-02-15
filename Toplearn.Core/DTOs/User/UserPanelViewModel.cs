@@ -53,4 +53,8 @@ namespace TopLearn.Core.DTOs.User
         [Compare("NewPassword",ErrorMessage ="تکرار رمز عبور صحیح نمی باشد")]
         public string ReNewPassword { get; set; }
     }
+    public class ChargeWalletViewModel
+    {
+        public int Amount { get; set; }
+    }
 }
