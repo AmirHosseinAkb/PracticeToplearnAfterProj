@@ -1,5 +1,5 @@
-﻿@page
-@model TopLearn.Pages.Admin.Users.CreateUserModel
+﻿@page "{userId}"
+@model TopLearn.Pages.Admin.Users.EditUserModel
 @{
 }
 
@@ -9,10 +9,12 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">افزودن کاربر جدید</h3></div>
                 <div class="panel-body">
+                    <input type="hidden" asp-for="EditUserViewModel.UserId" />
+                    <input type="hidden" asp-for="EditUserViewModel.AvatarName" />
                     <div class="form-group">
                         <label for="exampleInputEmail1">نام کاربری</label>
-                        <input asp-for="CreateUserViewModel.UserName" type="text" class="form-control" id="exampleInputEmail1">
-                        @if (Convert.ToBoolean(ViewData["IsExistUserName"]) == true)
+                        <input asp-for="EditUserViewModel.UserName" type="text" class="form-control" id="exampleInputEmail1">
+                        @if (Convert.ToBoolean(ViewData["ExistUserName"]) == true)
                         {
                             <div class="text-danger">
                                 این نام کاربری از قبل وجود دارد
@@ -21,8 +23,8 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">ایمیل</label>
-                        <input asp-for="CreateUserViewModel.Email" type="email" class="form-control" id="exampleInputEmail1">
-                        @if (Convert.ToBoolean(ViewData["IsExistEmail"]) == true)
+                        <input asp-for="EditUserViewModel.Email" type="email" class="form-control" id="exampleInputEmail1">
+                         @if (Convert.ToBoolean(ViewData["ExistEmail"]) == true)
                         {
                             <div class="text-danger">
                                 این ایمیل از قبل وجود دارد
@@ -31,19 +33,21 @@
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">رمز عبور</label>
-                        <input asp-for="CreateUserViewModel.Password" type="password" class="form-control" id="exampleInputPassword1">
+                        <input asp-for="EditUserViewModel.Password" type="password" class="form-control" id="exampleInputPassword1">
                     </div>
+                    <p class="help-block">درصورت وارد کردن رمز عبور، رمز عبور کاربر تغییر خواهد کرد در غیر اینصورت رمز عبور قبلی کاربر باقی خواهد ماند</p>
                     <div class="form-group">
                         <div class="checkbox checkbox-primary">
                             @{
                                 List<Role> roles = ViewData["Roles"] as List<Role>;
+                                List<int> userRoles = ViewData["UserRoles"] as List<int>;
                             }
                             <h4>نقش های کاربر</h4>
                             <hr />
                             @foreach (var role in roles)
                             {
                                 <div style="margin-right:20px">
-                                    <input id="@role.RoleId" type="checkbox" name="selectedRoles" value="@role.RoleId">
+                                    <input  id="@role.RoleId" @((userRoles.Any(ur=>ur==role.RoleId))?"checked":"") type="checkbox" name="selectedRoles" value="@role.RoleId">
                                     <label for="@role.RoleId">
                                         @role.RoleTitle
                                     </label>
@@ -61,10 +65,10 @@
                 <div class="panel-heading"><h3 class="panel-title">تصویر کاربر</h3></div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <img id="imgAvatar" class="img img-thumbnail" src="/UserAvatar/Default.png" />
+                        <img id="imgAvatar" class="img img-thumbnail" src="/UserAvatar/@Model.EditUserViewModel.AvatarName" />
                     </div>
                     <div class="form-group">
-                        <input asp-for="CreateUserViewModel.UserAvatar" id="imgInp" type="file" class="form-control" />
+                        <input asp-for="EditUserViewModel.UserAvatar" id="imgInp" type="file" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -74,21 +78,21 @@
 
 @section Scripts
 {
-<script>
-    function readURL(input) {
+    <script>
+        function readURL(input) {
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-            reader.onload = function (e) {
-                $('#imgAvatar').attr('src', e.target.result);
+                reader.onload = function (e) {
+                    $('#imgAvatar').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
             }
-
-            reader.readAsDataURL(input.files[0]);
         }
-    }
-    $("#imgInp").change(function () {
-        readURL(this);
-    });
-</script>
+        $("#imgInp").change(function () {
+            readURL(this);
+        });
+    </script>
 }

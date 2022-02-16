@@ -13,7 +13,7 @@ namespace TopLearn.Pages.Admin.Users
     {
         private IUserService _userService;
         private IPermissionService _permissionService;
-        public CreateUserModel(IUserService userService,IPermissionService permissionService)
+        public CreateUserModel(IUserService userService, IPermissionService permissionService)
         {
             _userService = userService;
             _permissionService = permissionService;
@@ -29,20 +29,23 @@ namespace TopLearn.Pages.Admin.Users
         {
             if (!ModelState.IsValid)
             {
+                ViewData["Roles"] = _permissionService.GetAllRoles();
                 return Page();
             }
             if (_userService.IsExistUserByUserName(CreateUserViewModel.UserName))
             {
+                ViewData["Roles"] = _permissionService.GetAllRoles();
                 ViewData["IsExistUserName"] = true;
                 return Page();
             }
             if (_userService.IsExistUserByEmail(CreateUserViewModel.Email))
             {
+                ViewData["Roles"] = _permissionService.GetAllRoles();
                 ViewData["IsExistEmail"] = true;
                 return Page();
             }
             //Add USer
-            int userId=_userService.AddUserFromAdmin(CreateUserViewModel);
+            int userId = _userService.AddUserFromAdmin(CreateUserViewModel);
             //Add User Roles
             _permissionService.AddUserRoles(selectedRoles, userId);
             return RedirectToPage("Index");

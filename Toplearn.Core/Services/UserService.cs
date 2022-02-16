@@ -257,5 +257,58 @@ namespace TopLearn.Core.Services
             AddUser(user);
             return user.UserId;
         }
+
+        public EditUserViewModel GetUserForEditInAdmin(int userId)
+        {
+            return _context.Users.Where(u => u.UserId == userId)
+                .Select(u => new EditUserViewModel()
+                {
+                    UserId = u.UserId,
+                    UserName = u.UserName,
+                    Email = u.Email,
+                    AvatarName = u.AvatarName
+                }).Single();
+        }
+
+        public User GetUserById(int userId)
+        {
+            return _context.Users.Find(userId);
+        }
+
+        public void EditUserFromAdmin(EditUserViewModel editUser)
+        {
+            var user = GetUserById(editUser.UserId);
+            user.UserName = editUser.UserName;
+            user.Email = EmailConvertor.FixEmail(editUser.Email);
+            if (!string.IsNullOrEmpty(editUser.Password))
+            {
+                user.Password = PasswordHasher.HashPasswrodMD5(editUser.Password);
+            }
+            if (editUser.UserAvatar != null)
+            {
+                string imagePath = "";
+                if (editUser.AvatarName != "Default.png")
+                {
+                    imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "UserAvatar",
+                        editUser.AvatarName);
+                    if (File.Exists(imagePath))
+                    {
+                        File.Delete(imagePath);
+                    }
+                }
+                user.AvatarName=NameGenerator.GenerateUniqName()+Path.GetExtension(editUser.UserAvatar.FileName);
+                imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "UserAvatar",
+                        user.AvatarName);
+                using(var stream=new FileStream(imagePath, FileMode.Create))
+                {
+                    editUser.UserAvatar.CopyTo(stream);
+                }
+            }
+            UpdateUser(user);
+        }
     }
 }
