@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Core.DTOs.User;
+using TopLearn.Data.Entities.User;
+using TopLearn.Core.Convertors;
+using TopLearn.Core.Generators;
+using TopLearn.Core.Security;
 
 namespace TopLearn.Pages.Admin.Users
 {
@@ -21,9 +25,27 @@ namespace TopLearn.Pages.Admin.Users
             ViewData["Roles"] = _permissionService.GetAllRoles();
         }
 
-        public IActionResult OnPost()
+        public IActionResult OnPost(List<int> selectedRoles)
         {
-            return null;
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            if (_userService.IsExistUserByUserName(CreateUserViewModel.UserName))
+            {
+                ViewData["IsExistUserName"] = true;
+                return Page();
+            }
+            if (_userService.IsExistUserByEmail(CreateUserViewModel.Email))
+            {
+                ViewData["IsExistEmail"] = true;
+                return Page();
+            }
+            //Add USer
+            int userId=_userService.AddUserFromAdmin(CreateUserViewModel);
+            //Add User Roles
+            _permissionService.AddUserRoles(selectedRoles, userId);
+            return RedirectToPage("Index");
         }
     }
 }

@@ -16,6 +16,20 @@ namespace TopLearn.Core.Services
         {
             _context = context;
         }
+
+        public void AddUserRoles(List<int> roleIds, int userId)
+        {
+            foreach (int roleId in roleIds)
+            {
+                _context.UserRoles.Add(new UserRole()
+                {
+                    UserId = userId,
+                    RoleId = roleId
+                });
+            }
+            _context.SaveChanges();
+        }
+
         public List<Role> GetAllRoles()
         {
             return _context.Roles.ToList();

@@ -24,10 +24,10 @@ namespace TopLearn.Core.Services
 
         public bool ActiveUserAccount(string activeCode)
         {
-            var user=_context.Users.SingleOrDefault(u=> u.ActiveCode == activeCode);
+            var user = _context.Users.SingleOrDefault(u => u.ActiveCode == activeCode);
             if (user != null)
             {
-                user.IsActive= true;
+                user.IsActive = true;
                 user.ActiveCode = NameGenerator.GenerateUniqName();
                 _context.SaveChanges();
                 return true;
@@ -43,12 +43,12 @@ namespace TopLearn.Core.Services
 
         public bool IsExistUserByEmail(string email)
         {
-            return _context.Users.Any(u=> u.Email == EmailConvertor.FixEmail(email));
+            return _context.Users.Any(u => u.Email == EmailConvertor.FixEmail(email));
         }
 
         public bool IsExistUserByUserName(string userName)
         {
-            return _context.Users.Any(u=>u.UserName == userName);
+            return _context.Users.Any(u => u.UserName == userName);
         }
 
         public User GetUserForLogin(string email, string password)
@@ -58,12 +58,12 @@ namespace TopLearn.Core.Services
 
         public User GetUserByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(u=>u.Email == EmailConvertor.FixEmail(email));
+            return _context.Users.SingleOrDefault(u => u.Email == EmailConvertor.FixEmail(email));
         }
 
         public bool ResetUserPassword(ResetPasswordViewModel reset)
         {
-            var user=_context.Users.SingleOrDefault(u=>u.ActiveCode == reset.ActiveCode);
+            var user = _context.Users.SingleOrDefault(u => u.ActiveCode == reset.ActiveCode);
             if (user != null)
             {
                 user.Password = PasswordHasher.HashPasswrodMD5(reset.Password);
@@ -76,7 +76,7 @@ namespace TopLearn.Core.Services
 
         public bool IsExistUserByActiveCode(string activeCode)
         {
-            return _context.Users.Any(u=>u.ActiveCode==activeCode);
+            return _context.Users.Any(u => u.ActiveCode == activeCode);
         }
 
         public UserInformationsForShowViewModel GetUserInformationsForShow(string userName)
@@ -94,7 +94,7 @@ namespace TopLearn.Core.Services
 
         public User GetUserByUserName(string userName)
         {
-            return _context.Users.SingleOrDefault(u=>u.UserName==userName);
+            return _context.Users.SingleOrDefault(u => u.UserName == userName);
         }
 
         public SideBarInformationsForShowViewModel GetSideBarInformationsForShow(string userName)
@@ -121,7 +121,7 @@ namespace TopLearn.Core.Services
 
         public void EditUserProfile(string userName, EditUserProfileViewModel editUserProfile)
         {
-            var user=GetUserByUserName(userName);
+            var user = GetUserByUserName(userName);
             if (editUserProfile.UserAvatar != null)
             {
                 string imagePath = "";
@@ -136,17 +136,17 @@ namespace TopLearn.Core.Services
                         File.Delete(imagePath);
                     }
                 }
-                user.AvatarName = NameGenerator.GenerateUniqName()+Path.GetExtension(editUserProfile.UserAvatar.FileName);
+                user.AvatarName = NameGenerator.GenerateUniqName() + Path.GetExtension(editUserProfile.UserAvatar.FileName);
                 imagePath = Path.Combine(Directory.GetCurrentDirectory(),
                     "wwwroot",
                     "UserAvatar",
                     user.AvatarName);
-                using(var stream=new FileStream(imagePath, FileMode.Create))
+                using (var stream = new FileStream(imagePath, FileMode.Create))
                 {
                     editUserProfile.UserAvatar.CopyTo(stream);
                 }
             }
-            user.UserName=editUserProfile.UserName;
+            user.UserName = editUserProfile.UserName;
             user.Email = EmailConvertor.FixEmail(editUserProfile.Email);
             UpdateUser(user);
         }
@@ -159,7 +159,7 @@ namespace TopLearn.Core.Services
 
         public int BalanceUserWallet(string userName)
         {
-            var userId=GetUserIdByUserName(userName);
+            var userId = GetUserIdByUserName(userName);
             var deposit = _context.Wallets.Where(w => w.TypeId == 1 && w.IsPayed && w.UserId == userId).ToList();
             var withdraw = _context.Wallets.Where(w => w.TypeId == 2 && w.IsPayed && w.UserId == userId).ToList();
             return deposit.Sum(d => d.Amount) - withdraw.Sum(w => w.Amount);
@@ -207,11 +207,11 @@ namespace TopLearn.Core.Services
 
             if (!string.IsNullOrEmpty(filterUserName))
             {
-                result = result.Where(u=>u.UserName.Contains(filterUserName));
+                result = result.Where(u => u.UserName.Contains(filterUserName));
             }
             if (!string.IsNullOrEmpty(filterEmail))
             {
-                result=result.Where(u=>u.Email.Contains(filterEmail));
+                result = result.Where(u => u.Email.Contains(filterEmail));
             }
 
             int take = 1;
@@ -227,6 +227,35 @@ namespace TopLearn.Core.Services
                 users.PageCount++;
             }
             return users;
+        }
+
+        public int AddUserFromAdmin(CreateUserViewModel createUser)
+        {
+            User user = new User()
+            {
+                UserName = createUser.UserName,
+                Email = EmailConvertor.FixEmail(createUser.Email),
+                Password = PasswordHasher.HashPasswrodMD5(createUser.Password),
+                ActiveCode = NameGenerator.GenerateUniqName(),
+                IsActive = true,
+                IsDeleted = false,
+                AvatarName = "Default.png",
+                RegisterDate = DateTime.Now
+            };
+            if (createUser.UserAvatar != null)
+            {
+                user.AvatarName = NameGenerator.GenerateUniqName() + Path.GetExtension(createUser.UserAvatar.FileName);
+                string imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "UserAvatar",
+                    user.AvatarName);
+                using(var stream=new FileStream(imagePath, FileMode.Create))
+                {
+                    createUser.UserAvatar.CopyTo(stream);
+                }
+            }
+            AddUser(user);
+            return user.UserId;
         }
     }
 }

@@ -11,5 +11,6 @@ namespace TopLearn.Core.Services.Interfaces
     public interface IPermissionService
     {
         List<Role> GetAllRoles();
+        void AddUserRoles(List<int> roleIds, int userId);
     }
 }
