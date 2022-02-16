@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopLearn.Data.Context;
 
@@ -11,9 +12,10 @@ using TopLearn.Data.Context;
 namespace TopLearn.Data.Migrations
 {
     [DbContext(typeof(TopLearnContext))]
-    partial class TopLearnContextModelSnapshot : ModelSnapshot
+    [Migration("20220215203810_FixTypeIdColumn")]
+    partial class FixTypeIdColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +144,7 @@ namespace TopLearn.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wallets");
+                    b.ToTable("Wallet");
                 });
 
             modelBuilder.Entity("TopLearn.Data.Entities.Wallet.WalletType", b =>
@@ -160,7 +162,7 @@ namespace TopLearn.Data.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("WalletTypes");
+                    b.ToTable("WalletType");
                 });
 
             modelBuilder.Entity("TopLearn.Data.Entities.User.UserRole", b =>

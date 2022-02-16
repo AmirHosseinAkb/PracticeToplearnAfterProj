@@ -1,6 +1,7 @@
-﻿@model ChargeWalletViewModel
+﻿@model ChargeUserWalleViewModel
 @{
     ViewData["Title"] = "کیف پول شما";
+    List<UserWalletsForShowViewModel> wallets = ViewData["UserWalletsList"] as List<UserWalletsForShowViewModel>;
 }
 
 <div class="container">
@@ -15,7 +16,7 @@
     <div class="container">
         <div class="user-account">
             <div class="row">
-                <form method="post" enctype="multipart/form-data">
+                <form asp-action="ChargeWallet" method="post">
                     <partial name="_SideBar" />
                     <div class="col-md-9">
                         <section class="user-account-content">
@@ -25,12 +26,48 @@
                                     <div class="col-md-12">
                                         <div class="input-group">
                                             <span class="input-group-addon" id="username"><i class="zmdi zmdi-cash-dollar"></i></span>
-                                            <input asp-for="Amount" type="number" class="form-control" placeholder="مبلغ قابل شارژ به تومان" aria-describedby="username">
+                                            <input asp-for="Amount" type="number" class="form-control" placeholder="مبلغ قابل شارژ به تومان" value="0" aria-describedby="username">
                                         </div>
                                         <span asp-validation-for="Amount" class="text-danger"></span>
                                     </div>
                                     <div class="col-md-7 col-sm-8 col-xs-12">
                                         <button class="btn btn-success"> شارژ کیف پول </button>
+                                    </div>
+                                    <div class="col-md-12" style="margin-top:20px">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>مبلغ تراکنش</th>
+                                                    <th>شرح تراکنش</th>
+                                                    <th>تراکنش موفق</th>
+                                                    <th>تاریخ تراکنش</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var wallet in wallets)
+                                                {
+                                                    <tr>
+                                                        <td>@wallet.Amount</td>
+                                                        <td>@wallet.Description</td>
+                                                        <td>
+                                                            @if (wallet.IsPayed)
+                                                            {
+                                                                <span class="text-success">
+                                                                    <i class="glyphicon glyphicon-ok"></i>
+                                                                </span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="text-danger">
+                                                                    <i class="glyphicon glyphicon-remove"></i>
+                                                                </span>
+                                                            }
+                                                        </td>
+                                                        <td>@wallet.CreateDate.ToShamsi()</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace TopLearn.Data.Entities.Wallet
         #region Relations
 
         public User.User User { get; set; }
+        [ForeignKey("TypeId")]
         public WalletType WalletType { get; set; }
 
         #endregion

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TopLearn.Data.Context;
 
@@ -11,9 +12,10 @@ using TopLearn.Data.Context;
 namespace TopLearn.Data.Migrations
 {
     [DbContext(typeof(TopLearnContext))]
-    partial class TopLearnContextModelSnapshot : ModelSnapshot
+    [Migration("20220215203631_InitWallets")]
+    partial class InitWallets
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,13 +138,16 @@ namespace TopLearn.Data.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("WalletId");
+                    b.Property<int>("WalletTypeTypeId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("TypeId");
+                    b.HasKey("WalletId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Wallets");
+                    b.HasIndex("WalletTypeTypeId");
+
+                    b.ToTable("Wallet");
                 });
 
             modelBuilder.Entity("TopLearn.Data.Entities.Wallet.WalletType", b =>
@@ -160,7 +165,7 @@ namespace TopLearn.Data.Migrations
 
                     b.HasKey("TypeId");
 
-                    b.ToTable("WalletTypes");
+                    b.ToTable("WalletType");
                 });
 
             modelBuilder.Entity("TopLearn.Data.Entities.User.UserRole", b =>
@@ -184,15 +189,15 @@ namespace TopLearn.Data.Migrations
 
             modelBuilder.Entity("TopLearn.Data.Entities.Wallet.Wallet", b =>
                 {
-                    b.HasOne("TopLearn.Data.Entities.Wallet.WalletType", "WalletType")
-                        .WithMany("Wallets")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TopLearn.Data.Entities.User.User", "User")
                         .WithMany("Wallets")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TopLearn.Data.Entities.Wallet.WalletType", "WalletType")
+                        .WithMany("Wallets")
+                        .HasForeignKey("WalletTypeTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

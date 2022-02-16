@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "OnlinePayment";
+}
+
+@if (ViewBag.IsSuccess == true)
+{
+    <div class="alert alert-success" style="margin:10px 0px">
+        <p>تبریک می گوییم! تراکنش شما با موفقیت انجام شد</p>
+        <p>کد پیگیری: @ViewBag.Code</p>
+        <a class="btn btn-warning" href="/UserPanel/Wallet">بازگشت به پنل کاربری</a>
+    </div>
+}
+else
+{
+     <div class="alert alert-danger" style="margin:10px 0px">
+        <p>متاسفانه عملیات پرداخت با شکست مواجه شد</p>
+        <a class="btn btn-warning" href="/UserPanel/Wallet">بازگشت به پنل کاربری</a>
+    </div>
+}
+
