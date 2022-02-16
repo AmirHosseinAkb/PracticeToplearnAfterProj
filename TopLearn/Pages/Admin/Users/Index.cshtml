@@ -14,16 +14,18 @@
         </div>
         <div id="datatable-editable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
             <div class="row" style="margin-bottom:10px">
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="نام کاربری" name="filterUserName" style="width:100%" />
-                </div>
-                <div class="col-md-4">
-                    <input type="text" class="form-control" placeholder="ایمیل" name="filterEmail" style="width:100%" />
-                </div>
-                <div class="col-md-4">
-                    <input type="submit" value="جستجو" class="btn btn-success" />
-                    <a class="btn btn-warning" href="/Admin/Users">پاک کردن فیلدها</a>
-                </div>
+                <form method="get">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="نام کاربری" name="filterUserName" style="width:100%" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="ایمیل" name="filterEmail" style="width:100%" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" value="جستجو" class="btn btn-success" />
+                        <a class="btn btn-warning" href="/Admin/Users">پاک کردن فیلدها</a>
+                    </div>
+                </form>
             </div><div class="row">
                 <div class="col-sm-12">
                     <table class="table table-bordered table-striped dataTable no-footer" id="datatable-editable" role="grid" aria-describedby="datatable-editable_info">
