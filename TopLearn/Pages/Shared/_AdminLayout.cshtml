@@ -11,7 +11,7 @@
     <title>Moltran - Responsive Admin Dashboard Template</title>
 
     <!-- Base Css Files -->
-    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 
     <!-- Font Icons -->
     <link href="~/AdminContent/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
@@ -100,7 +100,7 @@
                         </li>
 
                         <li class="has_sub">
-                            <a href="#" class="waves-effect"><i class="md md-poll"></i><span> کاربران </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <a href="#" class="waves-effect"><i class="fa fa-users"></i><span> کاربران </span><span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
                                 <li><a href="/Admin/Users">مدیریت کاربران</a></li>
                                 <li><a href="/Admin/Roles">مدیریت دسترسی ها</a></li>
@@ -109,7 +109,7 @@
                         </li>
 
                         <li class="has_sub">
-                            <a href="#" class="waves-effect"><i class="md md-place"></i><span> دوره های سایت </span><span class="pull-right"><i class="md md-add"></i></span></a>
+                            <a href="#" class="waves-effect"><i class="fa fa-book"></i><span> دوره های سایت </span><span class="pull-right"><i class="md md-add"></i></span></a>
                             <ul class="list-unstyled">
                                 <li><a href="gmap.html"> Google Map</a></li>
                                 <li><a href="vector-map.html"> Vector Map</a></li>
@@ -315,3 +315,4 @@
 
 </body>
 </html>
+@RenderSection("Scripts",false)

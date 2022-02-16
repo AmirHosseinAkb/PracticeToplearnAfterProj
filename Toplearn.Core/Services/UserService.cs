@@ -125,7 +125,7 @@ namespace TopLearn.Core.Services
             if (editUserProfile.UserAvatar != null)
             {
                 string imagePath = "";
-                if (editUserProfile.AvatarName == "Default.png")
+                if (editUserProfile.AvatarName != "Default.png")
                 {
                     imagePath = Path.Combine(Directory.GetCurrentDirectory(),
                         "wwwroot",
