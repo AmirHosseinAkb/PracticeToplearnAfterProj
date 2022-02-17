@@ -20,5 +20,11 @@ namespace TopLearn.Core.Services.Interfaces
         bool IsExistRoleByTitle(string roleTile);
         int AddRole(Role role);
         void AddRolePermissions(List<int> permissionIds, int roleId);
+        Role GetRoleById(int roleId);
+        Role GetRoleByIdNoTracking(int roleId);
+        List<int> GetRolePermissionIds(int roleId);
+        void UpdateRole(Role role);
+        void EditRolePermissions(List<int>permissionIds,int roleId);
+        
     }
 }

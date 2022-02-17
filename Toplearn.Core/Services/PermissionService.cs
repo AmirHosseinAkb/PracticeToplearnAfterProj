@@ -52,6 +52,12 @@ namespace TopLearn.Core.Services
             _context.SaveChanges();
         }
 
+        public void EditRolePermissions(List<int> permissionIds, int roleId)
+        {
+            _context.RolePermissions.Where(rp => rp.RoleId == roleId).ToList().ForEach(rp => _context.RolePermissions.Remove(rp));
+            AddRolePermissions(permissionIds, roleId);
+        }
+
         public void EditUserRoles(List<int> roleIds, int userId)
         {
             _context.UserRoles.Where(ur => ur.UserId == userId).ToList().ForEach(ur => _context.UserRoles.Remove(ur));
@@ -76,6 +82,23 @@ namespace TopLearn.Core.Services
             return _context.Roles.ToList();
         }
 
+        public Role GetRoleById(int roleId)
+        {
+            return _context.Roles.Find(roleId);
+        }
+
+        public Role GetRoleByIdNoTracking(int roleId)
+        {
+            return _context.Roles.AsNoTracking().SingleOrDefault(r=>r.RoleId==roleId);
+        }
+
+        public List<int> GetRolePermissionIds(int roleId)
+        {
+            return _context.RolePermissions
+                .Where(rp => rp.RoleId == roleId)
+                .Select(rp => rp.PermissionId).ToList();
+        }
+
         public List<Role> GetRolesWithPermissionsForShow()
         {
             return _context.Roles.Include(r => r.RolePermissions)
@@ -92,6 +115,12 @@ namespace TopLearn.Core.Services
         public bool IsExistRoleByTitle(string roleTile)
         {
             return _context.Roles.Any(r => r.RoleTitle == roleTile);
+        }
+
+        public void UpdateRole(Role role)
+        {
+            _context.Roles.Update(role);
+            _context.SaveChanges();
         }
     }
 }
