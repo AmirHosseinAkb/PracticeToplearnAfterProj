@@ -29,6 +29,7 @@ namespace TopLearn.Core.Services.Interfaces
         #region UserPanel
 
         UserInformationsForShowViewModel GetUserInformationsForShow(string userName);
+        UserInformationsForShowViewModel GetUserInformationsForShow(int userId);
         SideBarInformationsForShowViewModel GetSideBarInformationsForShow(string userName);
         EditUserProfileViewModel GetUserInformationsForEdit(string userName);
         void EditUserProfile(string userName,EditUserProfileViewModel editUserProfile);
@@ -52,6 +53,7 @@ namespace TopLearn.Core.Services.Interfaces
         int AddUserFromAdmin(CreateUserViewModel user);
         EditUserViewModel GetUserForEditInAdmin(int userId);
         void EditUserFromAdmin(EditUserViewModel editUser);
+        void DeleteUser(string userName);
         #endregion
 
     }

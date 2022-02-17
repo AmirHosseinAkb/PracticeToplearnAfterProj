@@ -310,5 +310,25 @@ namespace TopLearn.Core.Services
             }
             UpdateUser(user);
         }
+
+        public UserInformationsForShowViewModel GetUserInformationsForShow(int userId)
+        {
+            var user=GetUserById(userId);
+            UserInformationsForShowViewModel userInformationsForShowViewModel = new UserInformationsForShowViewModel()
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                RegisterDate = user.RegisterDate,
+                Wallet = BalanceUserWallet(user.UserName)
+            };
+            return userInformationsForShowViewModel;
+        }
+
+        public void DeleteUser(string userName)
+        {
+            var user = GetUserByUserName(userName);
+            user.IsDeleted = true;
+            _context.SaveChanges();
+        }
     }
 }
