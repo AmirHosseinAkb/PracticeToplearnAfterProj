@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using TopLearn.Data.Entities.Permission;
 using TopLearn.Data.Entities.User;
 using TopLearn.Data.Entities.Wallet;
 
@@ -24,6 +25,12 @@ namespace TopLearn.Data.Context
 
         public DbSet<Wallet> Wallets { get; set; }
         public DbSet<WalletType> WalletTypes { get; set; }
+
+        #endregion
+        #region Permission
+
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
 
         #endregion
 

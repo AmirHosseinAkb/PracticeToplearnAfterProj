@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\.editorconfig" Link=".editorconfig" />
     <None Include="wwwroot\js\site.js" />
   </ItemGroup>
 

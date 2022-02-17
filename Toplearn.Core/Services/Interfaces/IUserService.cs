@@ -55,7 +55,7 @@ namespace TopLearn.Core.Services.Interfaces
         EditUserViewModel GetUserForEditInAdmin(int userId);
         void EditUserFromAdmin(EditUserViewModel editUser);
         void DeleteUser(string userName);
-        public void ReturnFromDeletedUsers(int userId);
+        void ReturnFromDeletedUsers(int userId);
         #endregion
 
     }

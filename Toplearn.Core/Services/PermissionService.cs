@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Data.Entities.User;
 using TopLearn.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace TopLearn.Core.Services
 {
