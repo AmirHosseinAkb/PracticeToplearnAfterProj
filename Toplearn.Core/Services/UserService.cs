@@ -11,6 +11,7 @@ using TopLearn.Data.Entities.User;
 using TopLearn.Core.Security;
 using TopLearn.Core.DTOs.User;
 using TopLearn.Data.Entities.Wallet;
+using Microsoft.EntityFrameworkCore;
 
 namespace TopLearn.Core.Services
 {
@@ -272,7 +273,7 @@ namespace TopLearn.Core.Services
 
         public User GetUserById(int userId)
         {
-            return _context.Users.Find(userId);
+            return _context.Users.SingleOrDefault(u=>u.UserId==userId);
         }
 
         public void EditUserFromAdmin(EditUserViewModel editUser)
@@ -329,6 +330,41 @@ namespace TopLearn.Core.Services
             var user = GetUserByUserName(userName);
             user.IsDeleted = true;
             _context.SaveChanges();
+        }
+
+        public UsersForShowInAdminViewModel GetDeletedUsersForShowInAdmin(int pageId = 1, string filterUserName = "", string filterEmail = "")
+        {
+            IQueryable<User> result = _context.Users.IgnoreQueryFilters().Where(u=>u.IsDeleted);
+
+            if (!string.IsNullOrEmpty(filterUserName))
+            {
+                result = result.Where(u => u.UserName.Contains(filterUserName));
+            }
+            if (!string.IsNullOrEmpty(filterEmail))
+            {
+                result = result.Where(u => u.Email.Contains(filterEmail));
+            }
+
+            int take = 1;
+            int skip = (pageId - 1) * take;
+            var users = new UsersForShowInAdminViewModel()
+            {
+                Users = result.Skip(skip).Take(take).ToList(),
+                CurrentPage = pageId,
+                PageCount = result.Count() / take
+            };
+            if (result.Count() % take != 0)
+            {
+                users.PageCount++;
+            }
+            return users;
+        }
+
+        public void ReturnFromDeletedUsers(int userId)
+        {
+            User user = _context.Users.IgnoreQueryFilters().SingleOrDefault(u => u.UserId == userId);
+            user.IsDeleted = false;
+            UpdateUser(user);
         }
     }
 }
