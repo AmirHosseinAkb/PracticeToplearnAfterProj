@@ -50,6 +50,13 @@ namespace TopLearn.Core.Services
             return _context.Roles.ToList();
         }
 
+        public List<Role> GetRolesWithPermissionsForShow()
+        {
+            return _context.Roles.Include(r => r.RolePermissions)
+                .ThenInclude(rp => rp.Permission)
+                .ToList();
+        }
+
         public List<int> GetUserRoleIds(int userId)
         {
             return _context.UserRoles.Where(ur => ur.UserId == userId)
