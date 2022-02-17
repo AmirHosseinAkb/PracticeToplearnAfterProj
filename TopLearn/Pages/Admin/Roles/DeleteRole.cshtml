@@ -1,0 +1,16 @@
+﻿@page "{roleId}"
+@model TopLearn.Pages.Admin.Roles.DeleteRoleModel
+@{
+}
+
+<div class="alert alert-warning">
+    <h1>آیا مطمئنید که می خواهید نقش @Model.Role.RoleTitle را حذف کنید؟</h1>
+    <hr />
+    <form method="post">
+        <p>
+            <input type="hidden" asp-for="Role.RoleId" />
+            <input type="submit" class="btn btn-danger" value="تایید و حذف" />
+            <a href="/Admin/Roles" class="btn btn-success">انصراف</a>
+        </p>  
+    </form>
+</div>

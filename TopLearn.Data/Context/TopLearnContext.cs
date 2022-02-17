@@ -38,6 +38,10 @@ namespace TopLearn.Data.Context
         {
             modelBuilder.Entity<User>()
                 .HasQueryFilter(u => !u.IsDeleted);
+
+            modelBuilder.Entity<Role>()
+                .HasQueryFilter(r => !r.IsDeleted);
+
             base.OnModelCreating(modelBuilder);
         }
     }
