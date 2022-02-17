@@ -7,6 +7,7 @@ using TopLearn.Core.Services.Interfaces;
 using TopLearn.Data.Entities.User;
 using TopLearn.Data.Context;
 using Microsoft.EntityFrameworkCore;
+using TopLearn.Data.Entities.Permission;
 
 namespace TopLearn.Core.Services
 {
@@ -16,6 +17,26 @@ namespace TopLearn.Core.Services
         public PermissionService(TopLearnContext context)
         {
             _context = context;
+        }
+
+        public int AddRole(Role role)
+        {
+            _context.Roles.Add(role);
+            _context.SaveChanges();
+            return role.RoleId;
+        }
+
+        public void AddRolePermissions(List<int> permissionIds, int roleId)
+        {
+            foreach (int permissionId in permissionIds)
+            {
+                _context.RolePermissions.Add(new RolePermission()
+                {
+                    RoleId = roleId,
+                    PermissionId = permissionId
+                });
+            }
+            _context.SaveChanges();
         }
 
         public void AddUserRoles(List<int> roleIds, int userId)
@@ -45,6 +66,11 @@ namespace TopLearn.Core.Services
             _context.SaveChanges();
         }
 
+        public List<Permission> GetAllPermissions()
+        {
+            return _context.Permissions.ToList();
+        }
+
         public List<Role> GetAllRoles()
         {
             return _context.Roles.ToList();
@@ -61,6 +87,11 @@ namespace TopLearn.Core.Services
         {
             return _context.UserRoles.Where(ur => ur.UserId == userId)
                 .Select(ur => ur.RoleId).ToList();
+        }
+
+        public bool IsExistRoleByTitle(string roleTile)
+        {
+            return _context.Roles.Any(r => r.RoleTitle == roleTile);
         }
     }
 }

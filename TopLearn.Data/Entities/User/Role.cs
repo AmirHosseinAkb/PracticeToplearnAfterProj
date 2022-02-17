@@ -19,8 +19,8 @@ namespace TopLearn.Data.Entities.User
 
         #region Relations
 
-        public List<UserRole> UserRoles { get; set; }
-        public List<Permission.RolePermission> RolePermissions { get; set; }
+        public List<UserRole>? UserRoles { get; set; }
+        public List<Permission.RolePermission>? RolePermissions { get; set; }
 
         #endregion
 
