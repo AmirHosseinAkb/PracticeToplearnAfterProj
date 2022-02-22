@@ -36,9 +36,9 @@ namespace TopLearn.Data.Entities.Course
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
         public int CoursePrice { get; set; }
 
-        public string CourseDemoFileName { get; set; }
+        public string? CourseDemoFileName { get; set; }
 
-        public string CourseImageName { get; set; }
+        public string? CourseImageName { get; set; }
 
         [Display(Name = "کلمات کلیدی دوره")]
         [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
@@ -56,16 +56,16 @@ namespace TopLearn.Data.Entities.Course
         #region Relations
 
         [ForeignKey("GroupId")]
-        public CourseGroup CourseGroup { get; set; }
+        public CourseGroup? CourseGroup { get; set; }
         [ForeignKey("SubId")]
-        public CourseGroup SubGroup { get; set; }
+        public CourseGroup? SubGroup { get; set; }
         [ForeignKey("TeacherId")]
-        public User.User User { get; set; }
+        public User.User? User { get; set; }
         [ForeignKey("StatusId")]
-        public CourseStatus CourseStatus { get; set; }
+        public CourseStatus? CourseStatus { get; set; }
         [ForeignKey("LevelId")]
-        public CourseLevel CourseLevel { get; set; }
-        public List<CourseEpisode> CourseEpisodes { get; set; }
+        public CourseLevel? CourseLevel { get; set; }
+        public List<CourseEpisode>? CourseEpisodes { get; set; }
 
         #endregion
     }

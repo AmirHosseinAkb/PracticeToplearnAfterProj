@@ -42,8 +42,11 @@ namespace TopLearn.Pages.Admin.Courses
         {
             if(!ModelState.IsValid || !courseImage.IsImage())
             {
+                GetInformations();
                 return Page();
             }
+            //AddCourse
+            _courseService.AddCourse(Course, courseImage, courseDemoFile);
             return RedirectToPage("Index");
         }
     }
