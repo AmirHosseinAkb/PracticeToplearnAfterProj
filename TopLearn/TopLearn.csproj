@@ -26,4 +26,10 @@
     <ProjectReference Include="..\TopLearn.Data\TopLearn.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Course\Episodes\" />
+    <Folder Include="wwwroot\Course\Thumbnails\" />
+    <Folder Include="wwwroot\MyImages\" />
+  </ItemGroup>
+
 </Project>
