@@ -12,4 +12,12 @@ namespace TopLearn.Core.DTOs.Course
         public int CurrentPage { get; set; }
         public int PageCount { get; set; }
     }
+    public class CourseInformationsViewModel
+    {
+        public int CourseId { get; set; }
+        public string CourseTitle { get; set; }
+        public string TeacherName { get; set; }
+        public int EpisodeCount { get; set; }
+        public string StatusTitle { get; set; }
+    }
 }

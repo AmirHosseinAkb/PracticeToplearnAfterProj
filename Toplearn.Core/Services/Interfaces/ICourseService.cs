@@ -29,6 +29,8 @@ namespace TopLearn.Core.Services.Interfaces
         Course GetCourseById(int courseId);
         void EditCourse(Course course,IFormFile courseImage,IFormFile courseDemoFile);
         ShowCoursesViewModel GetCoursesForShow(int pageId=1,string filterCourseTitle="");
+        CourseInformationsViewModel GetCourseInformationsForShow(int courseId);
+        void DeleteCourse(int courseId);
         #endregion
     }
 }

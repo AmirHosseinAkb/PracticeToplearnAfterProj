@@ -64,6 +64,13 @@ namespace TopLearn.Core.Services
             UpdateCourse(course);
         }
 
+        public void DeleteCourse(int courseId)
+        {
+            var course=GetCourseById(courseId);
+            course.IsDeleted=true;
+            _context.SaveChanges();
+        }
+
         public void EditCourse(Course course, IFormFile courseImage, IFormFile courseDemoFile)
         {
             course.UpdateDate = DateTime.Now;
@@ -151,6 +158,22 @@ namespace TopLearn.Core.Services
                     Text = g.GroupTitle,
                     Value = g.GroupId.ToString()
                 }).ToList();
+        }
+
+        public CourseInformationsViewModel GetCourseInformationsForShow(int courseId)
+        {
+            return _context.Courses
+                .Include(c => c.User)
+                .Include(c => c.CourseStatus)
+                .Where(c => c.CourseId == courseId)
+                .Select(c => new CourseInformationsViewModel()
+                {
+                    CourseId=c.CourseId,
+                    CourseTitle = c.CourseTitle,
+                    TeacherName = c.User.UserName,
+                    EpisodeCount = c.CourseEpisodes.Count(),
+                    StatusTitle = c.CourseStatus.StatusTitle
+                }).Single();
         }
 
         public List<SelectListItem> GetCourseLevels()

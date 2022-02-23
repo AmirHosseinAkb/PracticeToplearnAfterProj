@@ -1,0 +1,23 @@
+﻿@page "{courseId}"
+@model TopLearn.Pages.Admin.Courses.DeleteCourseModel
+@{
+}
+
+<div class="alert alert-warning">
+    <h1>آیا مطمئنید که میخواهید @Model.CourseInformations.CourseTitle را حذف کنید؟</h1>
+    <hr />
+    <label>مشخصات دوره:</label>
+    <ul>
+        <li>مدرس دوره: @Model.CourseInformations.TeacherName</li>
+        <li>وضعیت دوره: @Model.CourseInformations.StatusTitle</li>
+        <li>تعداد اپیزود های دوره: @Model.CourseInformations.EpisodeCount</li>
+    </ul>
+    <hr />
+    <form method="post">
+        <input type="hidden" asp-for="CourseInformations.CourseId" />
+        <div>
+            <input type="submit" class="btn btn-danger" value="تایید و حذف" />
+            <a href="/Admin/Courses" class="btn btn-success">انصراف</a>
+        </div>
+    </form>
+</div>
