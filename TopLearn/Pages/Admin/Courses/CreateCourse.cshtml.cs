@@ -38,7 +38,7 @@ namespace TopLearn.Pages.Admin.Courses
             GetInformations();
         }
 
-        public IActionResult OnPost(IFormFile courseImage, IFormFile courseDemoFile)
+        public IActionResult OnPost(IFormFile courseImage, IFormFile? courseDemoFile)
         {
             if(!ModelState.IsValid || !courseImage.IsImage())
             {

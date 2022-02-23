@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TopLearn.Data.Entities.Course;
+using TopLearn.Core.DTOs.Course;
 
 namespace TopLearn.Core.Services.Interfaces
 {
@@ -27,6 +28,7 @@ namespace TopLearn.Core.Services.Interfaces
         void UpdateCourse(Course course);
         Course GetCourseById(int courseId);
         void EditCourse(Course course,IFormFile courseImage,IFormFile courseDemoFile);
+        ShowCoursesViewModel GetCoursesForShow(int pageId=1,string filterCourseTitle="");
         #endregion
     }
 }

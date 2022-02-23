@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TopLearn.Core.Convertors;
+using TopLearn.Core.DTOs.Course;
 using TopLearn.Core.Generators;
 using TopLearn.Core.Services.Interfaces;
 using TopLearn.Data.Context;
@@ -159,6 +161,29 @@ namespace TopLearn.Core.Services
                     Text = l.LevelTitle,
                     Value = l.LevelId.ToString()
                 }).ToList();
+        }
+
+        public ShowCoursesViewModel GetCoursesForShow(int pageId = 1, string filterCourseTitle = "")
+        {
+            IQueryable<Course> result = _context.Courses.Include(c=>c.User).Include(c=>c.CourseStatus);
+            if (!string.IsNullOrEmpty(filterCourseTitle))
+            {
+                result = result.Where(r => r.CourseTitle.Contains(filterCourseTitle));
+            }
+            int take = 5;
+            int skip = (pageId - 1) * take;
+
+            var courseVm = new ShowCoursesViewModel()
+            {
+                Courses = result.Skip(skip).Take(take).ToList(),
+                CurrentPage = pageId,
+                PageCount = result.Count() / take
+            };
+            if (result.Count() % take != 0)
+            {
+                courseVm.PageCount++;
+            }
+            return courseVm;
         }
 
         public List<SelectListItem> GetCourseStatuses()

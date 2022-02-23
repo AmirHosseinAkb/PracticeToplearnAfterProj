@@ -35,10 +35,10 @@ namespace TopLearn.Pages.Admin.Courses
         public Course Course { get; set; }
         public void OnGet(int courseId)
         {
-            GetInformations(Course);
             Course = _courseService.GetCourseById(courseId);
+            GetInformations(Course);
         }
-        public IActionResult OnPost(IFormFile courseImage,IFormFile courseDemoFile)
+        public IActionResult OnPost(IFormFile? courseImage,IFormFile? courseDemoFile)
         {
             if (!ModelState.IsValid)
             {

@@ -8,8 +8,8 @@ namespace TopLearn.Core.DTOs.Course
 {
     public class ShowCoursesViewModel
     {
-        public string CourseTitle { get; set; }
-        public int CoursePrice { get; set; }
-        public int MyProperty { get; set; }
+        public List<TopLearn.Data.Entities.Course.Course> Courses { get; set; }
+        public int CurrentPage { get; set; }
+        public int PageCount { get; set; }
     }
 }

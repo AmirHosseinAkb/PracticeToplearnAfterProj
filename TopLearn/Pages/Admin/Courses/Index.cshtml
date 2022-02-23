@@ -2,3 +2,86 @@
 @model TopLearn.Pages.Admin.Courses.IndexModel
 @{
 }
+
+<div class="panel">
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="m-b-30">
+                    <a asp-page="CreateCourse" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن دوره جدید <i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div id="datatable-editable_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="row" style="margin-bottom:10px">
+                <form method="get">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" placeholder="عنوان دوره" name="filterCourseTitle" style="width:100%" />
+                    </div>
+                    <div class="col-md-4">
+                        <input type="submit" value="جستجو" class="btn btn-success" />
+                        <a class="btn btn-warning" href="/Admin/Courses">پاک کردن فیلد</a>
+                    </div>
+                </form>
+            </div><div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-striped dataTable no-footer" id="datatable-editable" role="grid" aria-describedby="datatable-editable_info">
+                        <thead>
+                            <tr role="row">
+                                <th>تصویر دوره</th>
+                                <th>عنوان دوره</th>
+                                <th>مدرس دوره</th>
+                                <th>تعداد اپیزود ها</th>
+                                <th>وضعیت دوره</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var course in Model.ShowCoursesViewModel.Courses)
+                            {
+                                <tr>
+                                    <td>
+                                        <img class=" img img-thumbnail" src="/Course/Thumbnails/@course.CourseImageName">
+                                    </td>
+                                    <td>@course.CourseTitle</td>
+                                    <td>@course.User.UserName</td>
+                                    <td>
+                                        @if (course.CourseEpisodes == null)
+                                        {
+                                            <p>0</p>
+                                        }
+                                        else
+                                        {
+                                            <p>@course.CourseEpisodes.Count()</p>
+                                        }
+                                    </td>
+                                    <td>@course.CourseStatus.StatusTitle</td>
+                                    <td class="actions">
+                                        <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                                        <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                                        <a asp-page="EditCourse" asp-route-courseId="@course.CourseId" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                                        <a asp-page="DeleteCourse" asp-route-courseId="@course.CourseId" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div><div class="row">
+                <div class="col-md-6">
+                    <div class="dataTables_paginate paging_simple_numbers" id="datatable-editable_paginate">
+                        <ul class="pagination">
+                            @for (var i = 1; i <= Model.ShowCoursesViewModel.PageCount; i++)
+                            {
+                                <li class="paginate_button @((i==Model.ShowCoursesViewModel.CurrentPage)?"active":"")" aria-controls="datatable-editable" tabindex="0"><a href="/Admin/Courses?pageId=@i">@i</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end: page -->
+
+</div>

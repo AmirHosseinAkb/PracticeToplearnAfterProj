@@ -14,7 +14,7 @@ namespace TopLearn.Data.Entities.Course
         public int CourseId { get; set; }
         [Required]
         public int GroupId { get; set; }
-        public int SubId { get; set; }
+        public int? SubId { get; set; }
         [Required]
         public int TeacherId { get; set; }
         [Required]
@@ -48,7 +48,7 @@ namespace TopLearn.Data.Entities.Course
         [Required]
         public DateTime CreateDate { get; set; }
 
-        public DateTime UpdateDate { get; set; }
+        public DateTime? UpdateDate { get; set; }
 
         public bool IsDeleted { get; set; }
 
