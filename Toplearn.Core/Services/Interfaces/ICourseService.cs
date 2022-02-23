@@ -25,6 +25,8 @@ namespace TopLearn.Core.Services.Interfaces
 
         void AddCourse(Course course, IFormFile courseImage, IFormFile courseDemo);
         void UpdateCourse(Course course);
+        Course GetCourseById(int courseId);
+        void EditCourse(Course course,IFormFile courseImage,IFormFile courseDemoFile);
         #endregion
     }
 }

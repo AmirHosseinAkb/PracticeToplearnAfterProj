@@ -1,5 +1,5 @@
-﻿@page
-@model TopLearn.Pages.Admin.Courses.CreateCourseModel
+﻿@page "{courseId}"
+@model TopLearn.Pages.Admin.Courses.EditCourseModel
 @{
 }
 
@@ -9,6 +9,9 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">افزودن دوره جدید</h3></div>
                 <div class="panel-body">
+                    <input type="hidden" asp-for="Course.CourseId" />
+                    <input type="hidden" asp-for="Course.CourseImageName" />
+                    <input type="hidden" asp-for="Course.CourseDemoFileName" />
                     <div class="form-group">
                         <label for="exampleInputEmail1">عنوان دوره</label>
                         <input asp-for="Course.CourseTitle" type="text" class="form-control" id="exampleInputEmail1">
@@ -64,10 +67,16 @@
                 <div class="panel-heading"><h3 class="panel-title">تصویر دوره</h3></div>
                 <div class="panel-body">
                     <div class="form-group">
-                        <img id="imgAvatar" class="img img-thumbnail" src="/Course/Images/NoPhoto.png" />
+                        <img id="imgAvatar" class="img img-thumbnail" src="/Course/Images/@Model.Course.CourseImageName" />
                     </div>
                     <div class="form-group">
                         <input id="imgInp" name="courseImage" type="file" class="form-control" />
+                    </div>
+                    <div class="text-warning">
+                        @if (Convert.ToBoolean(ViewData["IsntImage"]) == true)
+                        {
+                            <p>لطفا فقط تصویر انتخاب کنید</p>
+                        }
                     </div>
                 </div>
             </div>

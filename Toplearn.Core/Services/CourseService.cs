@@ -18,7 +18,7 @@ namespace TopLearn.Core.Services
         private TopLearnContext _context;
         public CourseService(TopLearnContext context)
         {
-            _context = context; 
+            _context = context;
         }
 
         public void AddCourse(Course course, IFormFile courseImage, IFormFile courseDemo)
@@ -48,18 +48,97 @@ namespace TopLearn.Core.Services
             }
             if (courseDemo != null)
             {
-                course.CourseDemoFileName=NameGenerator.GenerateUniqName()+Path.GetExtension(courseDemo.FileName);
-                string demoPath= Path.Combine(Directory.GetCurrentDirectory(),
+                course.CourseDemoFileName = NameGenerator.GenerateUniqName() + Path.GetExtension(courseDemo.FileName);
+                string demoPath = Path.Combine(Directory.GetCurrentDirectory(),
                     "wwwroot",
                     "Course",
                     "Demoes",
                     course.CourseDemoFileName);
-                using(var stream=new FileStream(demoPath, FileMode.Create))
+                using (var stream = new FileStream(demoPath, FileMode.Create))
                 {
                     courseDemo.CopyTo(stream);
                 }
             }
             UpdateCourse(course);
+        }
+
+        public void EditCourse(Course course, IFormFile courseImage, IFormFile courseDemoFile)
+        {
+            course.UpdateDate = DateTime.Now;
+            if (courseImage != null)
+            {
+                string imagePath = "";
+                string thumbPath = "";
+                if (course.CourseImageName != "NoPhoto.png")
+                {
+                    imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Images",
+                        course.CourseImageName);
+                    thumbPath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Thumbnails",
+                        course.CourseImageName);
+                    if (File.Exists(imagePath))
+                    {
+                        File.Delete(imagePath);
+                    }
+                    if (File.Exists(thumbPath))
+                    {
+                        File.Delete(thumbPath);
+                    }
+                }
+                course.CourseImageName = NameGenerator.GenerateUniqName() + Path.GetExtension(courseImage.FileName);
+                imagePath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Images",
+                        course.CourseImageName);
+                using (var stream = new FileStream(imagePath, FileMode.Create))
+                {
+                    courseImage.CopyTo(stream);
+                }
+                thumbPath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Thumbnails",
+                        course.CourseImageName);
+                ImageConvertor imageConvertor = new ImageConvertor();
+                imageConvertor.Image_resize(imagePath, thumbPath, 300);
+            }
+
+            if (courseDemoFile != null)
+            {
+                string demoPath = "";
+                if (course.CourseDemoFileName != null)
+                {
+                    demoPath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Demoes",
+                        course.CourseDemoFileName);
+                    if (File.Exists(demoPath))
+                        File.Delete(demoPath);
+                }
+                course.CourseDemoFileName = NameGenerator.GenerateUniqName() + Path.GetExtension(courseDemoFile.FileName);
+                demoPath = Path.Combine(Directory.GetCurrentDirectory(),
+                        "wwwroot",
+                        "Course",
+                        "Demoes",
+                        course.CourseDemoFileName);
+                using (var stream = new FileStream(demoPath, FileMode.Create))
+                {
+                    courseDemoFile.CopyTo(stream);
+                }
+            }
+            UpdateCourse(course);
+        }
+
+        public Course GetCourseById(int courseId)
+        {
+            return _context.Courses.Find(courseId);
         }
 
         public List<SelectListItem> GetCourseGroups()
