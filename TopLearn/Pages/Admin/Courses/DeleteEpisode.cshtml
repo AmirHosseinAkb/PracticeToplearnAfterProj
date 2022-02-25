@@ -1,0 +1,37 @@
+﻿@page "{episodeId}"
+@model TopLearn.Pages.Admin.Courses.DeleteEpisodeModel
+@{
+}
+
+<div class="alert alert-warning">
+    <h1>آیا مطمئنید که میخواهید @Model.CourseEpisode.EpisodeTitle را حذف کنید؟</h1>
+    <hr />
+    <label>مشخصات اپیزود</label>
+    <ul>
+        <li>مدت اپیزود: @Model.CourseEpisode.EpisodeTime</li>
+        <li>
+            رایگان: @if (Model.CourseEpisode.IsFree)
+            {
+                <span class="text-success">
+                    <i class="glyphicon glyphicon-ok"></i>
+                </span>
+            }
+            else
+            {
+                <span class="text-danger">
+                    <i class="glyphicon glyphicon-remove"></i>
+                </span>
+            }
+        </li>
+    </ul>
+    <hr />
+    <form method="post">
+          <div>
+              <input type="hidden" asp-for="CourseEpisode.EpisodeId" />
+              <input type="hidden" asp-for="CourseEpisode.CourseId" />
+              <input type="hidden" asp-for="CourseEpisode.EpisodeFileName" />
+        <input type="submit" class="btn btn-danger" value="تایید و حذف" />
+        <a class="btn btn-success" href="/Admin/Courses/EpisodeIndex/@Model.CourseEpisode.CourseId">انصراف</a>
+    </div>
+    </form>
+</div>

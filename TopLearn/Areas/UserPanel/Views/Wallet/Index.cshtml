@@ -48,7 +48,11 @@
                                                 {
                                                     <tr>
                                                         <td>@wallet.Amount</td>
-                                                        <td>@wallet.Description</td>
+                                                        @{
+                                                            string orderNumber = wallet.Description.Replace("پرداخت فاکتور شماره #", "");
+                                                            string tagHref=$"<a href='/ShowOrder/{orderNumber}'>#</a>";
+                                                        }
+                                                        <td>@Html.Raw(wallet.Description.Replace("#",tagHref))</td>
                                                         <td>
                                                             @if (wallet.IsPayed)
                                                             {

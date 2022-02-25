@@ -5,6 +5,7 @@ using TopLearn.Core.Services;
 using TopLearn.Core.Convertors;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IViewRenderService,RenderViewToString>();
 builder.Services.AddTransient<IPermissionService, PermissionService>();
 builder.Services.AddTransient<ICourseService,CourseService>();
+builder.Services.AddTransient<IOrderService,OrderService>();
 
 #endregion
 #region Authentication

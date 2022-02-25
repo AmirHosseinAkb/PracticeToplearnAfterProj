@@ -19,12 +19,12 @@ namespace TopLearn.Data.Entities.Course
         public string EpisodeTitle { get; set; }
         [Display(Name = "تایم اپیزود")]
         public TimeSpan EpisodeTime { get; set; }
+        public string? EpisodeFileName { get; set; }
         public bool IsFree { get; set; }
-        public bool IsDeleted { get; set; }
 
         #region Relations
 
-        public Course Course { get; set; }
+        public Course? Course { get; set; }
 
         #endregion
 

@@ -15,7 +15,7 @@ namespace TopLearn.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View(_courseService.GetCourses().Item1);
         }
 
         [Route("OnlinePayment/{walletId}")]
@@ -53,7 +53,6 @@ namespace TopLearn.Controllers
             using (var stream = new FileStream(path, FileMode.Create))
             {
                 upload.CopyTo(stream);
-
             }
 
             var url = $"{"/MyImages/"}{fileName}";

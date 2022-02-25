@@ -124,6 +124,14 @@ namespace TopLearn.Core.Services
             return _context.Roles.Any(r => r.RoleTitle == roleTile);
         }
 
+        public bool IsUserHavePermission(string userName, int permissionId)
+        {
+            var userId = _context.Users.SingleOrDefault(u => u.UserName == userName).UserId;
+            var userRoles = _context.UserRoles.Where(ur => ur.UserId == userId).Select(ur => ur.RoleId).ToList();
+            var rolePermissions = _context.RolePermissions.Where(rp => rp.PermissionId == permissionId).Select(rp => rp.RoleId).ToList();
+            return userRoles.Where(ur => rolePermissions.Contains(ur)).Any();
+        }
+
         public void UpdateRole(Role role)
         {
             _context.Roles.Update(role);

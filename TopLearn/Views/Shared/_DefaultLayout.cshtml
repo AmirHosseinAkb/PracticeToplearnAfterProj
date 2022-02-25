@@ -7,11 +7,11 @@
     <partial name="_Styles" />
     <script src="/js/jquery.min.js"></script>
 
-    <style>
+  @*  <style>
         body{
             font-family:'IRANSansWeb(FaNum)',sans-serif
         }
-    </style>
+    </style>*@
 </head>
 <body>
     <script src="/js/modernizr-custom.js"></script>
@@ -55,7 +55,7 @@
     </div>
 
     <!-- main manu -->
-    <partial name="_MainMenu" />
+    @await Component.InvokeAsync("ShowGroupsMenuComponent")
     <!-- /main manu -->
     <!-- content -->
     @RenderBody()
@@ -67,6 +67,7 @@
     <script src="/js/script.js"></script>
     <script src="/js/jquery.validate.min.js"></script>
     <script src="/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/noUiSlider/nouislider.min.js"></script>
 </body>
 </html>
 @RenderSection("Scripts",false)

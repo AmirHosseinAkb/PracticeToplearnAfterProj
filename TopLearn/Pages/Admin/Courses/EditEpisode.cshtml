@@ -1,0 +1,52 @@
+﻿@page "{episodeId}"
+@model TopLearn.Pages.Admin.Courses.EditEpisodeModel
+@{
+}
+
+<div class="row">
+    <form role="form" method="post" enctype="multipart/form-data">
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">ویرایش اپیزود @Model.CourseEpisode.EpisodeTitle</h3></div>
+                <div class="panel-body">
+                    <input type="hidden" asp-for="CourseEpisode.CourseId" />
+                    <input type="hidden" asp-for="CourseEpisode.EpisodeFileName" />
+                    <input type="hidden" asp-for="CourseEpisode.EpisodeId" />
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">عنوان اپیزود</label>
+                        <input asp-for="CourseEpisode.EpisodeTitle" type="text" class="form-control" id="exampleInputEmail1">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">مدت اپیزود</label>
+                        <input asp-for="CourseEpisode.EpisodeTime"  class="form-control" id="exampleInputEmail1">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">اپلود فایل اپیزود</label>
+                        <input name="episodeFile" type="file" class="form-control" id="exampleInputPassword1">
+
+                        @if (Convert.ToBoolean(ViewData["ExistFile"]) == true)
+                        {
+                            <div class="text-danger">
+                                این فایل از قبل وجود دارد لطفا نام قایل را تغییر دهید
+                            </div>
+                        }
+                        @if (Convert.ToBoolean(ViewData["NullFile"]) == true)
+                        {
+                             <div class="text-danger">
+                                لطفا فایل اپیزود را انتخاب کنید
+                            </div>
+                        }
+                    </div>
+                    <div style="margin-right:20px">
+                        <input asp-for="CourseEpisode.IsFree" id="checkBox" type="checkbox">
+                        <label for="checkBox">
+                            رایگان
+                        </label>
+                    </div>
+                    <hr />
+                    <button type="submit" class="btn btn-purple waves-effect waves-light">ویرایش اپیزود</button>
+                </div><!-- panel-body -->
+            </div> <!-- panel -->
+        </div>
+    </form>
+</div>

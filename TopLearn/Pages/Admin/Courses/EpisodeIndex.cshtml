@@ -1,0 +1,60 @@
+﻿@page "{courseId}"
+@model TopLearn.Pages.Admin.Courses.EpisodeIndexModel
+@{
+}
+<div class="panel">
+
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="m-b-30">
+                    <a asp-page="CreateEpisode" asp-route-courseId="@ViewData["CourseId"]" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن اپیزود جدید به دوره <i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table class="table table-bordered table-striped dataTable no-footer" id="datatable-editable" role="grid" aria-describedby="datatable-editable_info">
+                        <thead>
+                            <tr role="row">
+                                <th>عنوان اپیزود</th>
+                                <th>مدت اپیزود</th>
+                                <th>رایگان</th>
+                                <th>عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var episode in Model.CourseEpisodes)
+                            {
+                                <tr>
+                                   
+                                    <td>@episode.EpisodeTitle</td>
+                                    <td>@episode.EpisodeTime.ToString()</td>
+                                    <td>
+                                        @if (episode.IsFree)
+                                        {
+                                            <span class="text-success">
+                                                <i class="glyphicon glyphicon-ok"></i>
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-danger">
+                                                <i class="glyphicon glyphicon-remove"></i>
+                                            </span>
+                                        }
+                                    </td>
+                                    <td class="actions">
+                                        <a asp-page="EditEpisode" asp-route-episodeId="@episode.EpisodeId" class="btn btn-primary">ویرایش اپیزود</a>
+                                        <a asp-page="DeleteEpisode" asp-route-episodeId="@episode.EpisodeId" class="btn btn-danger">حذف اپیزود</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end: page -->
+</div>

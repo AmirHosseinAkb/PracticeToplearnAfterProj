@@ -62,7 +62,7 @@
                                         <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
                                         <a asp-page="EditCourse" asp-route-courseId="@course.CourseId" class="btn btn-primary">ویرایش دوره</a>
                                         <a asp-page="DeleteCourse" asp-route-courseId="@course.CourseId" class="btn btn-danger">حذف دوره</a>
-                                        <a asp-page="DeleteCourse" asp-route-courseId="@course.CourseId" class="btn btn-warning">اپیزود های دوره</a>
+                                        <a asp-page="EpisodeIndex" asp-route-courseId="@course.CourseId" class="btn btn-warning">اپیزود های دوره</a>
                                     </td>
                                 </tr>
                             }
@@ -84,5 +84,4 @@
         </div>
     </div>
     <!-- end: page -->
-
 </div>

@@ -26,6 +26,7 @@ namespace TopLearn.Core.Services.Interfaces
         void UpdateRole(Role role);
         void EditRolePermissions(List<int>permissionIds,int roleId);
         void DeleteRole(int roleId);
+        bool IsUserHavePermission(string userName, int permissionId);
         
     }
 }

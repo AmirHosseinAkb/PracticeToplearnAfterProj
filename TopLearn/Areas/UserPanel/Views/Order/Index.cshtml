@@ -1,0 +1,68 @@
+﻿@model List<Order>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">تاپ لرن</a></li>
+            <li class="breadcrumb-item active" aria-current="page"> لیست فاکتور های شما </li>
+        </ul>
+    </nav>
+</div>
+<main>
+    <div class="container">
+        <div class="user-account">
+            <div class="row">
+                <form asp-action="ChargeWallet" method="post">
+                    <partial name="_SideBar" />
+                    <div class="col-md-9">
+                        <section class="user-account-content">
+                            <header><h1> لیست فاکتور های خرید </h1></header>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>شماره فاکتور</th>
+                                        <th>قیمت کل</th>
+                                        <th>پرداخت شده</th>
+                                        <th>تاریخ</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td>@order.OrderId</td>
+                                            <td>@order.OrderSum.ToString("#,0") تومان</td>
+                                            <td>
+                                                @if (order.IsFinally)
+                                                {
+                                                    <span class="text-success">
+                                                        <i class="glyphicon glyphicon-ok"></i>
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                      <span class="text-danger">
+                                                        <i class="glyphicon glyphicon-remove"></i>
+                                                    </span>
+                                                }
+                                            </td>
+                                            <td>@order.CreateDate.ToShamsi()</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-block" href="/ShowOrder/@order.OrderId">نمایش فاکتور</a>
+                                        </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </section>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
