@@ -1,0 +1,62 @@
+﻿@page "{discountId}"
+@model TopLearn.Pages.Admin.Discounts.EditDiscountModel
+@{
+}
+
+<div class="row">
+    <form role="form" method="post">
+        <div class="col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">افزودن کد تخفیف جدید</h3></div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <input asp-for="Discount.DiscountId" type="hidden">
+                        <label for="exampleInputEmail1">کد تخفیف</label>
+                        <input asp-for="Discount.DiscountCode" type="text" class="form-control" id="exampleInputEmail1">
+                        <span asp-validation-for="Discount.DiscountCode" class="text-danger"></span>
+                        @if (Convert.ToBoolean(ViewData["ExistDiscount"]) == true)
+                        {
+                            <div class="text-danger">
+                                این کد تخفیف از قبل وجود دارد
+                            </div>
+                        }
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">درصد کد تخفیف</label>
+                        <input asp-for="Discount.DiscountPercent" type="number" class="form-control" id="exampleInputEmail1">
+                        <span asp-validation-for="Discount.DiscountPercent" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">تعداد استفاده</label>
+                        <input asp-for="Discount.UsableCount" type="number" class="form-control" id="exampleInputEmail1">
+                        <span asp-validation-for="Discount.UsableCount" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">تاریخ شروع</label>
+                        <input id="stDate" name="stDate" value="@((Model.Discount.StartDate!=null)?Model.Discount.StartDate?.ToShamsi():"")">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">تاریخ پایان</label>
+                        <input id="edDate" name="edDate" value="@((Model.Discount.EndDate!=null)?Model.Discount.EndDate?.ToShamsi():"")">
+                    </div>
+                    <button type="submit" class="btn btn-purple waves-effect waves-light">ثبت کد تخفیف</button>
+                </div><!-- panel-body -->
+            </div> <!-- panel -->
+        </div>
+    </form>
+</div>
+@section Scripts{
+
+<link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.common.min.css" rel="stylesheet" />
+<link href="http://cdn.kendostatic.com/2013.2.918/styles/kendo.default.min.css" rel="stylesheet" />
+<script src="/js/kendo.all.min.js"></script>
+<script>
+                $(document).ready(function() {
+
+    // create DatePicker from input HTML element
+                $("#stDate").kendoDatePicker();
+                $("#edDate").kendoDatePicker();
+            });
+</script>
+
+}

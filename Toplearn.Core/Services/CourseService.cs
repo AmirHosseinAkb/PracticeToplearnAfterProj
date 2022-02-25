@@ -64,10 +64,42 @@ namespace TopLearn.Core.Services
             UpdateCourse(course);
         }
 
+        public void AddEpisode(CourseEpisode episode, IFormFile episodeFile)
+        {
+            episode.EpisodeFileName = episodeFile.FileName;
+            string episodePath = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "Course",
+                "Episodes",
+                episode.EpisodeFileName);
+            using (var stream = new FileStream(episodePath, FileMode.Create))
+            {
+                episodeFile.CopyTo(stream);
+            }
+
+            _context.CourseEpisodes.Add(episode);
+            _context.SaveChanges();
+        }
+
         public void DeleteCourse(int courseId)
         {
-            var course=GetCourseById(courseId);
-            course.IsDeleted=true;
+            var course = GetCourseById(courseId);
+            course.IsDeleted = true;
+            _context.SaveChanges();
+        }
+
+        public void DeleteEpisode(CourseEpisode episode)
+        {
+            string filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "Course",
+                "Episodes",
+                 episode.EpisodeFileName);
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            _context.CourseEpisodes.Remove(episode);
             _context.SaveChanges();
         }
 
@@ -145,9 +177,53 @@ namespace TopLearn.Core.Services
             UpdateCourse(course);
         }
 
+        public void EditEpisode(CourseEpisode episode, IFormFile episodeFile)
+        {
+            string filePath = "";
+            if (episodeFile != null)
+            {
+                filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "Course",
+                    "Episodes",
+                    episode.EpisodeFileName);
+
+                if (File.Exists(filePath))
+                {
+                    File.Delete(filePath);
+                }
+                episode.EpisodeFileName = episodeFile.FileName;
+                filePath = Path.Combine(Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "Course",
+                    "Episodes",
+                    episode.EpisodeFileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    episodeFile.CopyTo(stream);
+                }
+            }
+            UpdateEpisode(episode);
+        }
+
+        public List<CourseGroup> GetAllGroups()
+        {
+            return _context.CourseGroups.ToList();
+        }
+
         public Course GetCourseById(int courseId)
         {
             return _context.Courses.Find(courseId);
+        }
+
+        public Course GetCourseForShow(int courseId)
+        {
+            return _context.Courses
+                .Include(c => c.CourseEpisodes)
+                .Include(c => c.CourseLevel)
+                .Include(c => c.CourseStatus)
+                .Include(c => c.User)
+                .SingleOrDefault(c => c.CourseId == courseId);
         }
 
         public List<SelectListItem> GetCourseGroups()
@@ -165,10 +241,11 @@ namespace TopLearn.Core.Services
             return _context.Courses
                 .Include(c => c.User)
                 .Include(c => c.CourseStatus)
+                .Include(c => c.CourseEpisodes)
                 .Where(c => c.CourseId == courseId)
                 .Select(c => new CourseInformationsViewModel()
                 {
-                    CourseId=c.CourseId,
+                    CourseId = c.CourseId,
                     CourseTitle = c.CourseTitle,
                     TeacherName = c.User.UserName,
                     EpisodeCount = c.CourseEpisodes.Count(),
@@ -186,9 +263,81 @@ namespace TopLearn.Core.Services
                 }).ToList();
         }
 
+        public Tuple<List<ShowCourseListItemViewModel>, int> GetCourses(int pageId = 1, string filterCourseTitle = "", string getType = "", string orderByType = "", int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 0)
+        {
+            if (take == 0)
+            {
+                take = 8;
+            }
+            IQueryable<Course> result = _context.Courses;
+            if (!string.IsNullOrEmpty(filterCourseTitle))
+            {
+                result = result.Where(c => c.CourseTitle.Contains(filterCourseTitle) || c.CourseTags.Contains(filterCourseTitle));
+            }
+            switch (getType)
+            {
+                case "all":
+                    break;
+                case "free":
+                    {
+                        result = result.Where(c => c.CoursePrice == 0);
+                        break;
+                    }
+                case "buy":
+                    {
+                        result = result.Where(c => c.CoursePrice != 0);
+                        break;
+                    }
+            }
+            switch (orderByType)
+            {
+                case "createDate":
+                    {
+                        result = result.OrderByDescending(c => c.CreateDate);
+                        break;
+                    }
+                case "updateDate":
+                    {
+                        result = result.OrderByDescending(c => c.UpdateDate);
+                        break;
+                    }
+            }
+            if (startPrice > 0)
+            {
+                result = result.Where(c => c.CoursePrice >= startPrice);
+            }
+            if (endPrice > 0)
+            {
+                result = result.Where(c => c.CoursePrice <= endPrice);
+            }
+
+            if (selectedGroups != null)
+            {
+                foreach (int groupId in selectedGroups)
+                {
+                    result = result.Where(c => c.GroupId == groupId || c.SubId==groupId);
+                }
+            }
+            int skip = (pageId - 1) * take;
+            var query= result.Include(c => c.CourseEpisodes).Skip(skip).Take(take)
+                .Select(c => new ShowCourseListItemViewModel()
+                {
+                    CourseId = c.CourseId,
+                    CourseTitle = c.CourseTitle,
+                    CourseImageName = c.CourseImageName,
+                    CoursePrice = c.CoursePrice
+                }).ToList();
+            int pageCount = result.Count() / take;
+            if (result.Count() % take != 0)
+            {
+                pageCount++;
+            }
+            return Tuple.Create(query,pageCount);
+        }
+
         public ShowCoursesViewModel GetCoursesForShow(int pageId = 1, string filterCourseTitle = "")
         {
-            IQueryable<Course> result = _context.Courses.Include(c=>c.User).Include(c=>c.CourseStatus);
+            IQueryable<Course> result = _context.Courses.Include(c => c.User).Include(c => c.CourseStatus).Include(c => c.CourseEpisodes);
             if (!string.IsNullOrEmpty(filterCourseTitle))
             {
                 result = result.Where(r => r.CourseTitle.Contains(filterCourseTitle));
@@ -230,6 +379,16 @@ namespace TopLearn.Core.Services
                 }).ToList();
         }
 
+        public CourseEpisode GetEpisodeById(int episodeId)
+        {
+            return _context.CourseEpisodes.Find(episodeId);
+        }
+
+        public List<CourseEpisode> GetEpisodesOfCourse(int courseId)
+        {
+            return _context.CourseEpisodes.Where(e => e.CourseId == courseId).ToList();
+        }
+
         public List<SelectListItem> GetSubGroupsOfCourseGroups(int groupId)
         {
             return _context.CourseGroups.Where(g => g.ParentId == groupId)
@@ -240,9 +399,27 @@ namespace TopLearn.Core.Services
                 }).ToList();
         }
 
+        public bool IsExistsEpisodeFile(string episodeFileName)
+        {
+            return _context.CourseEpisodes.Any(e => e.EpisodeFileName == episodeFileName);
+        }
+
+        public bool IsUserHaveCourse(string userName, int courseId)
+        {
+            var userId = _context.Users.SingleOrDefault(u => u.UserName == userName).UserId;
+
+            return _context.UserCourses.Any(uc => uc.UserId == userId && uc.CourseId == courseId);
+        }
+
         public void UpdateCourse(Course course)
         {
             _context.Courses.Update(course);
+            _context.SaveChanges();
+        }
+
+        public void UpdateEpisode(CourseEpisode episode)
+        {
+            _context.CourseEpisodes.Update(episode);
             _context.SaveChanges();
         }
     }

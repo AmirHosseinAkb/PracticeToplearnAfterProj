@@ -66,6 +66,8 @@ namespace TopLearn.Data.Entities.Course
         [ForeignKey("LevelId")]
         public CourseLevel? CourseLevel { get; set; }
         public List<CourseEpisode>? CourseEpisodes { get; set; }
+        public List<Order.OrderDetail> OrderDetails { get; set; }
+        public List<UserCourse> UserCourses { get; set; }
 
         #endregion
     }

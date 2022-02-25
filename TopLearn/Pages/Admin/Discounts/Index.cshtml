@@ -1,0 +1,49 @@
+﻿@page
+@model TopLearn.Pages.Admin.Discounts.IndexModel
+@{
+}
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="m-b-30">
+                    <a asp-page="CreateDiscount" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن کد تخفیف جدید <i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-striped dataTable no-footer" id="datatable-editable" role="grid" aria-describedby="datatable-editable_info">
+                    <thead>
+                        <tr role="row">
+                            <th>کد تخفیف</th>
+                            <th>درصد تخفیف کد</th>
+                            <th>تعداد استفاده</th>
+                            <th>تاریخ شروع</th>
+                            <th>تاریخ پایان</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var discount in Model.Discounts)
+                        {
+                            <tr>
+                                <td>@discount.DiscountCode</td>
+                                <td>@discount.DiscountPercent</td>
+                                <td>@((discount.UsableCount==null)?0:discount.UsableCount)</td>
+                                <td>@discount.StartDate?.ToShamsi()</td>
+                                <td>@discount.EndDate?.ToShamsi()</td>
+                                <td class="actions">
+                                    <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                                    <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                                    <a asp-page="EditDiscount" asp-route-discountId="@discount.DiscountId" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                                    <a asp-page="DeleteDiscount" asp-route-discountId="@discount.DiscountId" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

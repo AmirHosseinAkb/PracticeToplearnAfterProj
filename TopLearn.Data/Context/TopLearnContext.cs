@@ -8,6 +8,7 @@ using TopLearn.Data.Entities.Permission;
 using TopLearn.Data.Entities.User;
 using TopLearn.Data.Entities.Wallet;
 using TopLearn.Data.Entities.Course;
+using TopLearn.Data.Entities.Order;
 
 namespace TopLearn.Data.Context
 {
@@ -21,6 +22,7 @@ namespace TopLearn.Data.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<UserDiscount> UserDiscounts { get; set; }
         #endregion
         #region Wallet
 
@@ -34,7 +36,6 @@ namespace TopLearn.Data.Context
         public DbSet<RolePermission> RolePermissions { get; set; }
 
         #endregion
-
         #region Course
 
         public DbSet<CourseGroup> CourseGroups { get; set; }
@@ -42,11 +43,27 @@ namespace TopLearn.Data.Context
         public DbSet<CourseStatus> CourseStatuses { get; set; }
         public DbSet<CourseLevel> CourseLevels { get; set; }
         public DbSet<CourseEpisode> CourseEpisodes { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
 
 
         #endregion
+        #region Order
+
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
+
+        #endregion
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            var cascadeFKs = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(t => t.GetForeignKeys())
+            .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);
+            foreach (var fk in cascadeFKs)
+                fk.DeleteBehavior = DeleteBehavior.Restrict;
+
             modelBuilder.Entity<User>()
                 .HasQueryFilter(u => !u.IsDeleted);
 
@@ -61,9 +78,6 @@ namespace TopLearn.Data.Context
 
             modelBuilder.Entity<CourseGroup>()
                 .HasQueryFilter(g => !g.IsDeleted);
-
-            modelBuilder.Entity<CourseEpisode>()
-                .HasQueryFilter(e => !e.IsDeleted);
 
             modelBuilder.Entity<Role>()
                 .HasQueryFilter(r => !r.IsDeleted);
