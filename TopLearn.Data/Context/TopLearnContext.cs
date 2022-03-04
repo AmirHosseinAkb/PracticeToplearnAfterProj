@@ -44,6 +44,7 @@ namespace TopLearn.Data.Context
         public DbSet<CourseLevel> CourseLevels { get; set; }
         public DbSet<CourseEpisode> CourseEpisodes { get; set; }
         public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<CourseComment> CourseComments { get; set; }
 
 
         #endregion
@@ -78,6 +79,9 @@ namespace TopLearn.Data.Context
 
             modelBuilder.Entity<CourseGroup>()
                 .HasQueryFilter(g => !g.IsDeleted);
+
+            modelBuilder.Entity<CourseComment>()
+                .HasQueryFilter(c => !c.IsDeleted);
 
             modelBuilder.Entity<Role>()
                 .HasQueryFilter(r => !r.IsDeleted);

@@ -64,6 +64,12 @@ namespace TopLearn.Core.Services
             UpdateCourse(course);
         }
 
+        public void AddCourseComment(CourseComment courseComment)
+        {
+            _context.CourseComments.Add(courseComment);
+            _context.SaveChanges();
+        }
+
         public void AddEpisode(CourseEpisode episode, IFormFile episodeFile)
         {
             episode.EpisodeFileName = episodeFile.FileName;
@@ -208,12 +214,25 @@ namespace TopLearn.Core.Services
 
         public List<CourseGroup> GetAllGroups()
         {
-            return _context.CourseGroups.ToList();
+            return _context.CourseGroups.Include(g=>g.CourseGroups).ToList();
         }
 
         public Course GetCourseById(int courseId)
         {
             return _context.Courses.Find(courseId);
+        }
+
+        public Tuple<List<CourseComment>, int> GetCourseComments(int courseId, int pageId = 1)
+        {
+            int take = 5;
+            int skip = (pageId - 1) * take;
+            var query = _context.CourseComments.Include(c=>c.User).Where(c => c.CourseId == courseId);
+            int pageCount = query.Count() / take;
+            if (query.Count() % take > 0)
+            {
+                pageCount++;
+            }
+            return Tuple.Create(query.Skip(skip).Take(take).ToList(), pageCount);
         }
 
         public Course GetCourseForShow(int courseId)
@@ -388,6 +407,20 @@ namespace TopLearn.Core.Services
         public List<CourseEpisode> GetEpisodesOfCourse(int courseId)
         {
             return _context.CourseEpisodes.Where(e => e.CourseId == courseId).ToList();
+        }
+
+        public List<ShowCourseListItemViewModel> GetPopularCourses()
+        {
+            return _context.Courses.Include(c => c.UserCourses)
+                .Where(c=>c.OrderDetails.Any())
+                .OrderByDescending(c => c.UserCourses.Count())
+                .Take(8).Select(c => new ShowCourseListItemViewModel()
+                {
+                    CourseId = c.CourseId,
+                    CourseTitle = c.CourseTitle,
+                    CourseImageName = c.CourseImageName,
+                    CoursePrice = c.CoursePrice
+                }).ToList();
         }
 
         public List<SelectListItem> GetSubGroupsOfCourseGroups(int groupId)

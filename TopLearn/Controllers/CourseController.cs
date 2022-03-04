@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TopLearn.Core.Services.Interfaces;
+using TopLearn.Data.Entities.Course;
 
 namespace TopLearn.Controllers
 {
@@ -8,10 +9,12 @@ namespace TopLearn.Controllers
     {
         private ICourseService _courseService;
         private IOrderService _orderService;
-        public CourseController(ICourseService courseService, IOrderService orderService)
+        private IUserService _userService;
+        public CourseController(ICourseService courseService, IOrderService orderService,IUserService userService)
         {
             _courseService = courseService;
             _orderService = orderService;
+            _userService = userService;
         }
         public IActionResult Index(int pageId = 1, string filterCourseTitle = "", string getType = "", string orderByType = ""
             , int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 9)
@@ -62,6 +65,23 @@ namespace TopLearn.Controllers
                 return File(downloadFile, "application/force-download", fileName);
             }
             return Forbid();
+        }
+
+        [HttpPost]
+        public IActionResult CreateComment(CourseComment comment)
+        {
+            comment.IsDeleted = false;
+            comment.UserId=_userService.GetUserIdByUserName(User.Identity.Name);
+            comment.IsAdminRead = false;
+            comment.CreateDate = DateTime.Now;
+            _courseService.AddCourseComment(comment);
+            return View("ShowCourseComments",_courseService.GetCourseComments(comment.CourseId));
+        }
+
+        [Route("ShowCourseComments/{courseId}")]
+        public IActionResult ShowCourseComments(int courseId,int pageId = 1)
+        {
+            return View(_courseService.GetCourseComments(courseId, pageId));
         }
     }
 }

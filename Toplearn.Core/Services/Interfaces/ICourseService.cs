@@ -35,6 +35,7 @@ namespace TopLearn.Core.Services.Interfaces
         Tuple<List<ShowCourseListItemViewModel>,int> GetCourses(int pageId = 1, string filterCourseTitle = "", string getType = "", string orderByType = ""
             , int startPrice = 0, int endPrice = 0, List<int> selectedGroups = null, int take = 0);
         Course GetCourseForShow(int courseId);
+        List<ShowCourseListItemViewModel> GetPopularCourses();
         #endregion
 
         #region Episode
@@ -51,6 +52,13 @@ namespace TopLearn.Core.Services.Interfaces
         #region UserCourse
 
         bool IsUserHaveCourse(string userName, int courseId);
+
+        #endregion
+
+        #region Comments
+
+        void AddCourseComment(CourseComment courseComment);
+        Tuple<List<CourseComment>,int> GetCourseComments(int courseId,int pageId=1);
 
         #endregion
     }

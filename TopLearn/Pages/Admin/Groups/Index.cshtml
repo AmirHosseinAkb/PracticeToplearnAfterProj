@@ -1,0 +1,55 @@
+﻿@page
+@model TopLearn.Pages.Admin.Groups.IndexModel
+@{
+}
+
+<div class="panel">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="m-b-30">
+                    <a href="/Admin/Roles/CreateRole" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن گروه جدید <i class="fa fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="table table-bordered table-striped dataTable no-footer" id="datatable-editable" role="grid" aria-describedby="datatable-editable_info">
+                    <thead>
+                        <tr role="row">
+                            <th>گروه</th>
+                            <th>زیر گروه ها</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var group in Model.CourseGroups.Where(g=>g.ParentId==null))
+                        {
+                            <tr>
+                                <td>@group.GroupTitle</td>
+                                <td>
+                                    @if (group.CourseGroups.Any())
+                                    {
+                                        <ul>
+                                            @foreach (var sub in Model.CourseGroups.Where(g=>g.ParentId==group.GroupId))
+                                            {
+                                                <li>@sub.GroupTitle</li>
+                                            }
+                                        </ul>
+                                    }
+                                </td>
+                               
+                                <td class="actions">
+                                    <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
+                                    <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
+                                    <a asp-page="EditRole" asp-route-groupId="@role.RoleId" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                                    <a asp-page="DeleteGroup" asp-route-groupId="@role.RoleId" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
