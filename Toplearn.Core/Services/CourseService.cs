@@ -223,6 +223,7 @@ namespace TopLearn.Core.Services
                 .Include(c => c.CourseLevel)
                 .Include(c => c.CourseStatus)
                 .Include(c => c.User)
+                .Include(c=>c.UserCourses)
                 .SingleOrDefault(c => c.CourseId == courseId);
         }
 

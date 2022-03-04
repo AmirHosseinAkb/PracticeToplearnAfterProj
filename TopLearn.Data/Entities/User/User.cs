@@ -43,6 +43,7 @@ namespace TopLearn.Data.Entities.User
         public List<Order.Order> Orders { get; set; }
         public List<Course.UserCourse> UserCourses { get; set; }
         public List<UserDiscount> UserDiscounts { get; set; }
+        public List<Course.CourseComment> CourseComments { get; set; }
 
         #endregion
     }
