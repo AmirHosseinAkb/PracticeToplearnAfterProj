@@ -18,16 +18,16 @@ namespace TopLearn.Data.Entities.Course
         public string GroupTitle { get; set; }
         public int? ParentId { get; set; }
         [ForeignKey("ParentId")]
-        public List<CourseGroup> CourseGroups { get; set; }
+        public List<CourseGroup>? CourseGroups { get; set; }
 
         public bool IsDeleted { get; set; }
 
         #region Relations
 
         [InverseProperty("CourseGroup")]
-        public List<Course> Courses { get; set; }
+        public List<Course>? Courses { get; set; }
         [InverseProperty("SubGroup")]
-        public List<Course> SubCourses { get; set; }
+        public List<Course>? SubCourses { get; set; }
 
         #endregion
 

@@ -14,9 +14,12 @@ namespace TopLearn.Pages.Admin.Groups
         }
         [BindProperty]
         public CourseGroup CourseGroup { get; set; }
-        public void OnGet()
+        public void OnGet(int? groupId)
         {
-
+            CourseGroup = new CourseGroup()
+            {
+                ParentId = groupId
+            };
         }
 
         public IActionResult OnPost()

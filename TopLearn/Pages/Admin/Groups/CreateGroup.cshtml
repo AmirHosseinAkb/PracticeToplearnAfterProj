@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{groupId?}"
 @model TopLearn.Pages.Admin.Groups.CreateGroupModel
 @{
 }
@@ -9,6 +9,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h3 class="panel-title">افزودن گروه جدید</h3></div>
                 <div class="panel-body">
+                    <input type="hidden" asp-for="CourseGroup.ParentId" />
                     <div class="form-group">
                         <label for="exampleInputEmail1">عنوان گروه</label>
                         <input asp-for="CourseGroup.GroupTitle" type="text" class="form-control" id="exampleInputEmail1">
