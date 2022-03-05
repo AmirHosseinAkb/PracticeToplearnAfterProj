@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="m-b-30">
-                    <a href="/Admin/Roles/CreateRole" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن گروه جدید <i class="fa fa-plus"></i></a>
+                    <a asp-page="CreateGroup" id="addToTable" class="btn btn-primary waves-effect waves-light">افزودن گروه جدید <i class="fa fa-plus"></i></a>
                 </div>
             </div>
         </div>
@@ -42,8 +42,8 @@
                                 <td class="actions">
                                     <a href="#" class="hidden on-editing save-row"><i class="fa fa-save"></i></a>
                                     <a href="#" class="hidden on-editing cancel-row"><i class="fa fa-times"></i></a>
-                                    <a asp-page="EditRole" asp-route-groupId="@role.RoleId" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
-                                    <a asp-page="DeleteGroup" asp-route-groupId="@role.RoleId" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
+                                    <a asp-page="EditGroup" asp-route-groupId="@group.GroupId" class="on-default edit-row"><i class="fa fa-pencil"></i></a>
+                                    <a asp-page="DeleteGroup" asp-route-groupId="@group.GroupId" class="on-default remove-row"><i class="fa fa-trash-o"></i></a>
                                 </td>
                             </tr>
                         }

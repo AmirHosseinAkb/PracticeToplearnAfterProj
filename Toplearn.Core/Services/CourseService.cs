@@ -87,6 +87,12 @@ namespace TopLearn.Core.Services
             _context.SaveChanges();
         }
 
+        public void AddGroup(CourseGroup group)
+        {
+            _context.CourseGroups.Add(group);
+            _context.SaveChanges();
+        }
+
         public void DeleteCourse(int courseId)
         {
             var course = GetCourseById(courseId);
@@ -454,6 +460,12 @@ namespace TopLearn.Core.Services
         public void UpdateEpisode(CourseEpisode episode)
         {
             _context.CourseEpisodes.Update(episode);
+            _context.SaveChanges();
+        }
+
+        public void UpdateGroup(CourseGroup group)
+        {
+            _context.CourseGroups.Update(group);
             _context.SaveChanges();
         }
     }

@@ -2,3 +2,27 @@
 @model TopLearn.Pages.Admin.Groups.CreateGroupModel
 @{
 }
+
+<div class="row">
+    <form role="form" method="post">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading"><h3 class="panel-title">افزودن گروه جدید</h3></div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">عنوان گروه</label>
+                        <input asp-for="CourseGroup.GroupTitle" type="text" class="form-control" id="exampleInputEmail1">
+                        <span asp-validation-for="CourseGroup.GroupTitle" class="text-danger"></span>
+                        @if (Convert.ToBoolean(ViewData["ExistGroup"]) == true)
+                        {
+                            <div class="text-danger">
+                                این گروه از قبل وجود دارد
+                            </div>
+                        }
+                    </div>
+                    <button type="submit" class="btn btn-purple waves-effect waves-light">ثبت گروه</button>
+                </div><!-- panel-body -->
+            </div> <!-- panel -->
+        </div>
+    </form>
+</div>

@@ -61,5 +61,12 @@ namespace TopLearn.Core.Services.Interfaces
         Tuple<List<CourseComment>,int> GetCourseComments(int courseId,int pageId=1);
 
         #endregion
+
+        #region Groups
+
+        void AddGroup(CourseGroup group);
+        void UpdateGroup(CourseGroup group);
+
+        #endregion
     }
 }
