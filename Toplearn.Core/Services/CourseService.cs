@@ -415,6 +415,11 @@ namespace TopLearn.Core.Services
             return _context.CourseEpisodes.Where(e => e.CourseId == courseId).ToList();
         }
 
+        public CourseGroup GetGroupById(int groupId)
+        {
+            return _context.CourseGroups.Find(groupId);
+        }
+
         public List<ShowCourseListItemViewModel> GetPopularCourses()
         {
             return _context.Courses.Include(c => c.UserCourses)

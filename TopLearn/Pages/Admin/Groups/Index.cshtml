@@ -33,7 +33,7 @@
                                         <ul>
                                             @foreach (var sub in Model.CourseGroups.Where(g=>g.ParentId==group.GroupId))
                                             {
-                                                <li>@sub.GroupTitle</li>
+                                                <li>@sub.GroupTitle</li> <a asp-page="EditGroup" asp-route-groupId="@sub.GroupId" class="btn btn-info btn-xs">ویرایش زیر گروه</a>
                                             }
                                         </ul>
                                     }

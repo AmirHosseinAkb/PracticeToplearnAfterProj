@@ -66,6 +66,7 @@ namespace TopLearn.Core.Services.Interfaces
 
         void AddGroup(CourseGroup group);
         void UpdateGroup(CourseGroup group);
+        CourseGroup GetGroupById(int groupId);
 
         #endregion
     }
